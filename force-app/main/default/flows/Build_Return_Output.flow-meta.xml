@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Build_Return_Builder</name>
+        <label>Build Return Builder</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>ReturnBuilderAction</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>orderNumber</name>
+            <value>
+                <elementReference>orderNumber</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>productHint</name>
+            <value>
+                <elementReference>productHint</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>reasonCode</name>
+            <value>
+                <elementReference>reasonCode</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>method</name>
+            <value>
+                <elementReference>method</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>quantityHint</name>
+            <value>
+                <elementReference>quantityHint</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ReturnBuilderAction</nameSegment>
+        <outputParameters>
+            <assignToReference>returnBuilder</assignToReference>
+            <name>seed</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>productHintUnmatched</assignToReference>
+            <name>productHintUnmatched</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Displays the guided Return Builder output CLT. Runs ReturnBuilderAction as the agent user to query returnable orders/items/reason codes server-side and pass a fully-populated ReturnBuilderSeed into the CLT (the LWC renders it with no further data calls). Wrapping the action output in a Flow apex-defined variable preserves the ECv2 renderable flag.</description>
+    <environments>Default</environments>
+    <interviewLabel>Build Return {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Build Return</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Build_Return_Builder</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Optional stated preference: Return (refund) or Replacement (exchange).</description>
+        <name>method</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Optional order number the user referenced; leave blank to let the user pick from their returnable orders.</description>
+        <name>orderNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Optional product name/keyword the user named to return; matching items are pre-selected.</description>
+        <name>productHint</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>True when productHint named a specific item but matched nothing on the resolved order. Tell the user you could not find that specific item and show them the order so they can pick manually.</description>
+        <name>productHintUnmatched</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Optional quantity phrase/number the user stated (e.g. &quot;all&quot;, &quot;half&quot;, &quot;2&quot;); resolved deterministically against each pre-selected item&apos;s returnable quantity.</description>
+        <name>quantityHint</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Optional high-confidence reason picklist value the user stated; applied to pre-selected items.</description>
+        <name>reasonCode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Show to the user</description>
+        <name>returnBuilder</name>
+        <apexClass>ReturnBuilderSeed</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,23 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "returnBuilder" : {
+      "title" : "returnBuilder",
+      "description" : "The guided Return Builder to display to the user. Always show this to the user; do not convert it to text.",
+      "lightning:type" : "c__returnBuilderCard",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : true,
+      "copilotAction:isUsedByPlanner" : true,
+      "copilotAction:useHydratedPrompt" : false
+    },
+    "productHintUnmatched" : {
+      "title" : "productHintUnmatched",
+      "description" : "True when the item the user named could not be found on this order. The returnBuilder component is always rendered regardless of this value - never skip it. If true, additionally tell the user (in text, alongside the component) that you could not find that specific item by name and that the order's full details are shown below so they can pick manually - do not say the item was selected or returned, and do not say you have already displayed it before the component actually renders.",
+      "lightning:type" : "lightning__booleanType",
+      "lightning:isPII" : false,
+      "copilotAction:isDisplayable" : false,
+      "copilotAction:isUsedByPlanner" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

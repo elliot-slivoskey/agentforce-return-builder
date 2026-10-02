@@ -1,0 +1,177 @@
+<template>
+    <div class="rb-container">
+
+        <!-- Loading -->
+        <template if:true={loading}>
+            <div class="rb-loading">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Error -->
+        <template if:true={errorMessage}>
+            <div class="rb-error" role="alert">{errorMessage}</div>
+        </template>
+
+        <!-- ============ STEP 1: ORDER PICKER ============ -->
+        <template if:true={showOrders}>
+            <h2 class="rb-heading">Which order are you returning?</h2>
+
+            <template if:true={noOrders}>
+                <div class="rb-empty">You don't have any items eligible for return right now.</div>
+            </template>
+
+            <ul class="rb-order-list">
+                <template for:each={orders} for:item="order">
+                    <li key={order.id}>
+                        <button
+                            type="button"
+                            class="rb-order-card"
+                            data-id={order.id}
+                            onclick={handleSelectOrder}>
+                            <div class="rb-order-main">
+                                <span class="rb-order-number">Order #{order.orderNumber}</span>
+                                <span class="rb-order-date">{order.formattedDate}</span>
+                            </div>
+                            <div class="rb-order-sub">
+                                <span class="rb-order-count">{order.itemCountLabel}</span>
+                                <span class="rb-order-total">{order.formattedTotal}</span>
+                            </div>
+                        </button>
+                    </li>
+                </template>
+            </ul>
+        </template>
+
+        <!-- ============ STEP 2: ITEM SELECTION ============ -->
+        <template if:true={showItems}>
+            <div class="rb-items-header">
+                <button type="button" class="rb-back" onclick={handleBackToOrders}>&larr; Orders</button>
+                <template if:true={selectedOrder}>
+                    <span class="rb-order-context">Order #{selectedOrder.orderNumber}</span>
+                </template>
+            </div>
+
+            <h2 class="rb-heading">Select items to return</h2>
+
+            <template if:true={noItems}>
+                <div class="rb-empty">No returnable items on this order.</div>
+            </template>
+
+            <ul class="rb-item-list">
+                <template for:each={items} for:item="item">
+                    <li key={item.id} class="rb-item">
+                        <label class="rb-item-select">
+                            <input
+                                type="checkbox"
+                                data-id={item.id}
+                                checked={item.selected}
+                                onchange={handleToggleItem} />
+                        </label>
+
+                        <!-- Product image or fallback tile -->
+                        <div class="rb-thumb">
+                            <template if:true={item.hasImage}>
+                                <img
+                                    src={item.imageUrl}
+                                    alt={item.name}
+                                    data-id={item.id}
+                                    onerror={handleImageError} />
+                            </template>
+                            <template if:false={item.hasImage}>
+                                <span class="rb-thumb-fallback" aria-hidden="true">{item.initials}</span>
+                            </template>
+                        </div>
+
+                        <div class="rb-item-body">
+                            <div class="rb-item-name">{item.name}</div>
+                            <div class="rb-item-meta">
+                                <span class="rb-item-price">{item.formattedUnitPrice}</span>
+                                <span class="rb-item-history">{item.historyLabel}</span>
+                            </div>
+
+                            <!-- Controls only when selected -->
+                            <template if:true={item.selected}>
+                                <div class="rb-controls">
+                                    <div class="rb-stepper" role="group" aria-label="Quantity to return">
+                                        <button
+                                            type="button"
+                                            class="rb-step-btn"
+                                            data-id={item.id}
+                                            onclick={handleQtyDecrement}
+                                            aria-label="Decrease quantity">&minus;</button>
+                                        <span class="rb-qty" aria-live="polite">{item.quantity}</span>
+                                        <button
+                                            type="button"
+                                            class="rb-step-btn"
+                                            data-id={item.id}
+                                            onclick={handleQtyIncrement}
+                                            aria-label="Increase quantity">+</button>
+                                        <span class="rb-cap">of {item.cap}</span>
+                                    </div>
+
+                                    <div class="rb-field" data-id={item.id} onchange={handleReasonChange}>
+                                        <lightning-combobox
+                                            label="Reason"
+                                            variant="label-hidden"
+                                            placeholder="Select a reason"
+                                            value={item.reasonCode}
+                                            options={reasonOptions}></lightning-combobox>
+                                    </div>
+
+                                    <template if:true={item.showMethod}>
+                                        <div class="rb-field" data-id={item.id} onchange={handleMethodChange}>
+                                            <lightning-combobox
+                                                label="Resolution"
+                                                variant="label-hidden"
+                                                value={item.method}
+                                                options={methodOptions}></lightning-combobox>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+
+            <!-- Sticky summary + submit -->
+            <div class="rb-summary">
+                <span class="rb-summary-text">{summaryLabel}</span>
+                <template if:true={submitError}>
+                    <div class="rb-error" role="alert">{submitError}</div>
+                </template>
+                <button
+                    type="button"
+                    class="rb-submit"
+                    disabled={submitDisabled}
+                    onclick={handleSubmit}>
+                    <template if:true={submitting}>
+                        <lightning-spinner
+                            class="rb-submit-spinner"
+                            alternative-text="Submitting your return"
+                            size="small"
+                            variant="brand">
+                        </lightning-spinner>
+                    </template>
+                    {submitLabel}
+                </button>
+            </div>
+        </template>
+
+        <!-- ============ CONFIRMATION ============ -->
+        <template if:true={submitted}>
+            <div class="rb-success" role="status">
+                <div class="rb-success-check" aria-hidden="true">✓</div>
+                <h2 class="rb-success-title">Return submitted</h2>
+                <template if:true={returnOrderNumber}>
+                    <div class="rb-success-rma">RMA #{returnOrderNumber}</div>
+                </template>
+                <template if:true={replacementOrderNumber}>
+                    <div class="rb-success-replacement">Replacement order #{replacementOrderNumber}</div>
+                </template>
+                <p class="rb-success-msg">You'll receive return instructions by email. You can close this session or continue chatting.</p>
+            </div>
+        </template>
+    </div>
+</template>

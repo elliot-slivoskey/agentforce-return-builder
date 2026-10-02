@@ -1,0 +1,323 @@
+:host {
+    --rb-border: #e5e5e5;
+    --rb-accent: #0176d3;
+    --rb-success: #2e844a; /* commerce/confirmation green — matches the check badge, not the blue link accent */
+    --rb-text: #181818;
+    --rb-subtle: #706e6b;
+    --rb-bg-soft: #f3f3f3;
+    display: block;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--rb-text);
+}
+
+.rb-container {
+    max-width: 420px;
+}
+
+.rb-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 4px 0 12px;
+}
+
+.rb-loading {
+    position: relative;
+    min-height: 60px;
+}
+
+.rb-error {
+    background: #fef1ee;
+    border: 1px solid #ea6462;
+    color: #8c1b17;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.rb-empty {
+    color: var(--rb-subtle);
+    font-size: 13px;
+    padding: 16px;
+    text-align: center;
+    background: var(--rb-bg-soft);
+    border-radius: 8px;
+}
+
+/* ---- Order picker ---- */
+.rb-order-list,
+.rb-item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rb-order-card {
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid var(--rb-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.rb-order-card:hover,
+.rb-order-card:focus-visible {
+    border-color: var(--rb-accent);
+    box-shadow: 0 0 0 1px var(--rb-accent);
+    outline: none;
+}
+
+.rb-order-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.rb-order-number {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.rb-order-date {
+    color: var(--rb-subtle);
+    font-size: 12px;
+}
+
+.rb-order-sub {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--rb-subtle);
+}
+
+.rb-order-total {
+    font-weight: 600;
+    color: var(--rb-text);
+}
+
+/* ---- Items ---- */
+.rb-items-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.rb-back {
+    background: none;
+    border: none;
+    color: var(--rb-accent);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.rb-order-context {
+    font-size: 12px;
+    color: var(--rb-subtle);
+}
+
+.rb-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rb-border);
+    align-items: flex-start;
+}
+
+.rb-item-select input {
+    width: 18px;
+    height: 18px;
+    margin-top: 26px;
+    accent-color: var(--rb-accent);
+    cursor: pointer;
+}
+
+.rb-thumb {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--rb-bg-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rb-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rb-thumb-fallback {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--rb-subtle);
+}
+
+.rb-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.rb-item-name {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.rb-item-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--rb-subtle);
+    margin-top: 2px;
+}
+
+.rb-item-price {
+    font-weight: 600;
+    color: var(--rb-text);
+}
+
+.rb-controls {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rb-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rb-step-btn {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--rb-border);
+    background: #fff;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.rb-step-btn:hover {
+    border-color: var(--rb-accent);
+}
+
+.rb-qty {
+    min-width: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.rb-cap {
+    font-size: 12px;
+    color: var(--rb-subtle);
+}
+
+.rb-field {
+    max-width: 220px;
+}
+
+/* ---- Summary / submit ---- */
+.rb-summary {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid var(--rb-border);
+    padding-top: 12px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rb-summary-text {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.rb-submit {
+    position: relative; /* anchors the base spinner overlay while submitting */
+    min-height: 40px;
+    background: var(--rb-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Keep the submit spinner small and centered on the button so the activity
+   cue reads as part of the button rather than a separate flourish. */
+.rb-submit-spinner {
+    --slds-c-spinner-color-foreground: #fff;
+}
+
+.rb-submit:disabled {
+    background: #c9c7c5;
+    cursor: not-allowed;
+}
+
+.rb-submitted {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--rb-subtle);
+    text-align: center;
+}
+
+/* ---- Confirmation ---- */
+.rb-success {
+    text-align: center;
+    padding: 24px 16px;
+}
+
+.rb-success-check {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    background: var(--rb-success);
+    color: #fff;
+    font-size: 24px;
+    line-height: 44px;
+    font-weight: 700;
+}
+
+.rb-success-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.rb-success-rma {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rb-success);
+    margin-bottom: 4px;
+}
+
+.rb-success-replacement {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--rb-success);
+    margin-bottom: 8px;
+}
+
+.rb-success-msg {
+    font-size: 13px;
+    color: var(--rb-subtle);
+    margin: 0;
+}

@@ -1,0 +1,5 @@
+{
+  "title": "Return Builder",
+  "description": "Guided return builder that collects the order, item(s), quantities, reason codes, and return-vs-replacement choice for creating an RMA.",
+  "lightning:type": "@apexClassType/c__ReturnBuilderSeed"
+}

@@ -1,0 +1,41 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "orderNumber" : {
+      "title" : "orderNumber",
+      "description" : "Optional. If the user already named the order they want to return from, pass its order number so the builder opens straight to that order's items. Leave blank to let the user pick from their returnable orders. Do NOT ask the user to type item, quantity, reason, or refund/replacement details — the Return Builder collects all of that visually.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "productHint" : {
+      "title" : "productHint",
+      "description" : "Optional. If the user named one or more specific products to return (e.g. \"the batteries\", \"the shoes and shirts\"), pass that phrase exactly as it appears in the conversation; multiple products in one phrase are supported. If the user means their whole order (e.g. \"everything\", \"all items\", \"the entire order\"), pass that phrase and every returnable item is pre-selected. Leave blank if the user did not name a product or the whole order.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "reasonCode" : {
+      "title" : "reasonCode",
+      "description" : "Optional. Pass ONLY when the user stated a reason you can map with high confidence to one of the store's return reason values (the OrderItemSummaryChange.Reason picklist, e.g. Defective, Changed Mind) (e.g. \"they're broken\" -> Defective). If you are not highly confident, leave this blank and let the user pick.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "method" : {
+      "title" : "method",
+      "description" : "Optional. Pass \"Return\" for a refund or \"Replacement\" for an exchange, only if the user clearly stated which they want. Otherwise leave blank.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "quantityHint" : {
+      "title" : "quantityHint",
+      "description" : "Optional. If the user stated how many of the named product to return (e.g. \"all of them\", \"half\", \"2\", \"three\", \"all but one\"), pass that phrase or number exactly as stated. Leave blank if the user did not specify a quantity — the builder then defaults to 1 per item.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

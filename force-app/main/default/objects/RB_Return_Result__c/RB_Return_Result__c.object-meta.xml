@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <label>RB Return Result</label>
+    <pluralLabel>RB Return Results</pluralLabel>
+    <nameField>
+        <label>RB Return Result Name</label>
+        <type>AutoNumber</type>
+        <displayFormat>RR-{00000}</displayFormat>
+    </nameField>
+    <sharingModel>ReadWrite</sharingModel>
+    <!-- External OWD Private: the site guest can't read rows owned by
+         Automated Process under Secure Guest User Record Access, so
+         ReturnBuilderService.shareWithSiteGuests adds an Apex share (Read)
+         per row for the poll. -->
+    <externalSharingModel>Private</externalSharingModel>
+    <enableActivities>false</enableActivities>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+</CustomObject>
