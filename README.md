@@ -12,6 +12,11 @@ There are few working examples of an *interactive* output CLT, one that writes d
 
 ## Video Preview
 
+https://github.com/user-attachments/assets/accfe0a5-60fe-4318-b283-a58737e5c44f
+
+
+
+
 
 
 ---
