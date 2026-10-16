@@ -26,8 +26,6 @@ export default class ReturnBuilder extends LightningElement {
     @track selectedOrder;
     @track items = [];
     @track reasonOptions = [];
-    // code -> { allowChoice, defaultMethod }; drives the resolution selector.
-    reasonConfig = {};
     @track submitting = false;
     @track submitted = false;
     // Latches true the moment a request event is published. The RMA is then
@@ -99,37 +97,12 @@ export default class ReturnBuilder extends LightningElement {
         }
     }
 
-    // Build the reason dropdown options + the per-reason behaviour map. Prefers
-    // the rich `reasons` (derived server-side from the OrderChgReasonCategMap
-    // object); falls back to the flat `reasonCodes` (customer may always choose,
-    // refund default) for safety.
+    // Build the reason dropdown options. Prefers `reasons` (with labels); falls
+    // back to the flat `reasonCodes`.
     buildReasons(v) {
         const rich = Array.isArray(v.reasons) && v.reasons.length ? v.reasons : null;
-        const source =
-            rich ||
-            (v.reasonCodes || []).map((c) => ({
-                code: c,
-                label: c,
-                allowChoice: true,
-                defaultMethod: METHOD_RETURN
-            }));
+        const source = rich || (v.reasonCodes || []).map((c) => ({ code: c, label: c }));
         this.reasonOptions = source.map((r) => ({ label: r.label || r.code, value: r.code }));
-        this.reasonConfig = {};
-        source.forEach((r) => {
-            this.reasonConfig[r.code] = {
-                allowChoice: r.allowChoice !== false,
-                defaultMethod: r.defaultMethod || METHOD_RETURN
-            };
-        });
-    }
-
-    configFor(reasonCode) {
-        return (
-            (this.reasonConfig && this.reasonConfig[reasonCode]) || {
-                allowChoice: true,
-                defaultMethod: METHOD_RETURN
-            }
-        );
     }
 
     // ============================================================
@@ -158,22 +131,18 @@ export default class ReturnBuilder extends LightningElement {
         const cap = i.quantityAvailableToReturn || 0;
 
         // Context pre-fill: the planner may have named this product (preSelected)
-        // and/or a reason (presetReasonCode). When a reason is preset, mirror the
-        // same config-driven resolution the reason dropdown applies, so a
-        // pre-filled item is indistinguishable from one the user set by hand.
+        // and/or a reason (presetReasonCode). When a reason is preset, mirror what
+        // the reason dropdown does, so a pre-filled item is indistinguishable from
+        // one the user set by hand.
         const selected = i.preSelected === true;
         let reasonCode = '';
         let method = '';
         let showMethod = false;
         let quantity = 1;
         if (selected && i.presetReasonCode) {
-            const cfg = this.configFor(i.presetReasonCode);
             reasonCode = i.presetReasonCode;
-            showMethod = cfg.allowChoice;
-            // Honour a stated method only when the reason allows a choice; else
-            // the reason's configured default wins.
-            method =
-                cfg.allowChoice && i.presetMethod ? i.presetMethod : cfg.defaultMethod;
+            showMethod = true;
+            method = i.presetMethod || METHOD_RETURN;
         }
         if (selected && i.presetQuantity) {
             // Apex already clamped this to [1, cap]; clamp again defensively
@@ -263,13 +232,11 @@ export default class ReturnBuilder extends LightningElement {
     handleReasonChange(event) {
         const id = event.currentTarget.dataset.id;
         const val = event.detail ? event.detail.value : event.target.value;
-        const cfg = this.configFor(val);
-        // Selecting a reason reveals the Refund/Replacement selector only when the
-        // reason allows a choice; either way the method defaults per its config
-        // (applied silently when no selector is shown).
+        // Selecting a reason reveals the Refund/Replacement selector, defaulting
+        // to refund unless the shopper already picked a method.
         this.items = this.items.map((it) =>
             it.id === id
-                ? { ...it, reasonCode: val, method: cfg.defaultMethod, showMethod: cfg.allowChoice }
+                ? { ...it, reasonCode: val, method: it.method || METHOD_RETURN, showMethod: true }
                 : it
         );
     }
