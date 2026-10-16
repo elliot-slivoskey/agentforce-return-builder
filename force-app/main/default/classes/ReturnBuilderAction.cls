@@ -389,26 +389,10 @@ public without sharing class ReturnBuilderAction {
         return ReasonConfigService.reasonCodes();
     }
 
-    private static final String METHOD_RETURN = 'Return';      // refund path  -> Category 'Return'
-    private static final String METHOD_REPLACE = 'Replacement'; // reship path  -> Category 'Exchange'
+    private static final String METHOD_RETURN = 'Return';      // refund path
+    private static final String METHOD_REPLACE = 'Replacement'; // reship path
 
-    /**
-     * Active reason codes with per-reason resolution behaviour. The selectable
-     * reasons come from the OrderItemSummaryChange.Reason picklist (so a new
-     * picklist value shows up automatically); the behaviour (allow choice /
-     * default method) is layered on from the OOTB **Order Change Reason Category
-     * Mapping** object (`OrderChgReasonCategMap`), which maps a Reason to the
-     * order-change Category it's valid for. We read two categories:
-     *   - `Return`   -> a refund is offered for that reason
-     *   - `Exchange` -> a replacement (reship) is offered for that reason
-     * From there: both categories mapped => the customer may choose; only one =>
-     * that method is forced (selector hidden); the default method is Replacement
-     * only when Exchange is mapped without Return.
-     *
-     * **Graceful null handling:** a reason with NO mapping row for either
-     * category falls back to "customer may choose, refund by default" — an
-     * unmapped (Category, Reason) combination never errors or drops the reason.
-     */
+    /** Active reason codes with display labels (ReasonConfigService). */
     private static List<ReturnBuilderSeed.RBReason> reasons() {
         return ReasonConfigService.reasons();
     }

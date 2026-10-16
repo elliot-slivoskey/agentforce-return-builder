@@ -197,13 +197,8 @@ private class ReturnBuilderServiceTest {
         System.assertNotEquals(null, seed.reasonCodes, 'Reason list should not be null');
         System.assertNotEquals(null, seed.reasons, 'Rich reasons list should not be null');
         System.assert(!seed.reasons.isEmpty(), 'Reasons should be populated from the picklist');
-        // Every reason must carry a usable resolution default.
         for (ReturnBuilderSeed.RBReason r : seed.reasons) {
             System.assertNotEquals(null, r.code, 'Reason code set');
-            System.assertNotEquals(null, r.allowChoice, 'allowChoice set');
-            System.assert(
-                r.defaultMethod == 'Return' || r.defaultMethod == 'Replacement',
-                'defaultMethod must be Return or Replacement, got: ' + r.defaultMethod);
         }
         System.assertEquals(null, seed.resolvedOrderSummaryId, 'Unknown order resolves to null');
 

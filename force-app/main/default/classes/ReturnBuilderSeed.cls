@@ -31,12 +31,10 @@ global class ReturnBuilderSeed {
     @AuraEnabled global String resolvedOrderSummaryId;
 
     // Active return reason codes (OrderItemSummaryChange.Reason picklist).
-    // Retained for backward compatibility; `reasons` is the richer source.
+    // Retained for backward compatibility; `reasons` also carries labels.
     @AuraEnabled global List<String> reasonCodes;
 
-    // Return reasons WITH per-reason behaviour (from OrderChgReasonCategMap):
-    // whether the customer may choose Refund vs Replacement, and the default
-    // method. The LWC drives the resolution selector from this.
+    // Return reasons with display labels, for the reason dropdown.
     @AuraEnabled global List<RBReason> reasons;
 
     // Returnable orders, each with its returnable line items nested. The LWC
@@ -68,8 +66,6 @@ global class ReturnBuilderSeed {
     global class RBReason {
         @AuraEnabled global String code;            // picklist value (= reasonCode sent on submit)
         @AuraEnabled global String label;           // display label
-        @AuraEnabled global Boolean allowChoice;    // show the Refund/Replacement selector?
-        @AuraEnabled global String defaultMethod;   // 'Return' (refund) | 'Replacement'
     }
 
     @JsonAccess(serializable='always' deserializable='always')
